@@ -1,0 +1,21 @@
+{
+  "name": "vue-cli-plugin-holochain-app-simple",
+  "version": "0.0.3",
+  "description": "A simple Holocahin app showing how it all fits together.",
+  "author": "Philip Beadle <philip.beadle@holo.host>",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint --ext .js,.vue ."
+  },
+  "dependencies": {
+    "semver": "^7.1.2"
+  },
+  "peerDependenciesMeta": {
+    "sass-loader": {
+      "optional": true
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

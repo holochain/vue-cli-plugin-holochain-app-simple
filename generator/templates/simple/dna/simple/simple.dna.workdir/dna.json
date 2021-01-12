@@ -1,0 +1,10 @@
+{
+  "name": "simple",
+  "uuid": "",
+  "properties": null,
+  "zomes": {
+    "simple": {
+      "wasm_path": "../target/wasm32-unknown-unknown/release/simple.wasm"
+    }
+  }
+}
