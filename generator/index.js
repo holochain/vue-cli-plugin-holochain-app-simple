@@ -39,7 +39,6 @@ module.exports = (api, options) => {
       'serve:agent2': 'vue-cli-service serve --port 44002',
       'serve:agent3': 'vue-cli-service serve --port 44003',
       'serve:agent4': 'vue-cli-service serve --port 44004',
-      'postinstall': 'cd dna/simple/tests && yarn install',
       'start': 'nf start'
     }
   })
