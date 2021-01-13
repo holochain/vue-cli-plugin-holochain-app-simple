@@ -21,7 +21,7 @@ module.exports = (api, options) => {
 
   api.extendPackage({
     dependencies: {
-      '@holochain/conductor-api': 'latest',
+      '@holochain/conductor-api': '^0.0.1-dev.15',
       'byte-base64': '^1.1.0',
       'dexie': '^3.0.3-rc.4',
       '@mdi/font': '^5.8.55'
@@ -55,10 +55,6 @@ module.exports = (api, options) => {
 
     api.exitLog(`🍣  Successfully generated ${projectName} from the ${presetName}.\n`)
     api.exitLog(`Make sure you have holochain installed.`)
-    api.exitLog(`Build the DNA, cd dna/tests --> yarn build`)
-    api.exitLog(`In the Conductor Admin ./conductor/admin/src/store/modules/admin.store.js line 60`)
-    api.exitLog(`update the path to `)
-    api.exitLog(`Then run all the bits`)
     api.exitLog(`yarn start`)
   })
 }

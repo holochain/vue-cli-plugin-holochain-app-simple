@@ -34,7 +34,7 @@ module.exports = (orchestrator) => {
     console.log('thingList', thingList)
     t.deepEqual(thingList.things.length, 2)
   })
-  orchestrator.registerScenario.only('Create then delete a thing', async (s, t) => {
+  orchestrator.registerScenario('Create then delete a thing', async (s, t) => {
     const [alice] = await s.players([conductorConfig])
     const [[alice_simple_happ]] = await alice.installAgentsHapps(installation)
     const thing = await alice_simple_happ.cells[0].call('simple', 'create_thing', { uuid: uuidv4(), name: 'Test Client 1', location: 'Australia', parent: 'Things' });
