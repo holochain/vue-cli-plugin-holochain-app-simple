@@ -1,12 +1,12 @@
 import Vue from 'vue'
-import Vuex from 'vuex'
-import modules from './modules'
+import VueRouter from 'vue-router'
+import routes from './routes'
+Vue.use(VueRouter)
 
-Vue.use(Vuex)
-
-export default new Vuex.Store({
-  state: {},
-  actions: {},
-  mutations: {},
-  modules
+const router = new VueRouter({
+  mode: 'history',
+  base: process.env.BASE_URL,
+  routes
 })
+
+export default router

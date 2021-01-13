@@ -204,15 +204,7 @@ export default {
     }
   },
   created () {
-    if (this.$route.query.agentPubKey) localStorage.setItem('agentPubKey', decodeURIComponent(this.$route.query.agentPubKey))
-    if (this.$route.query.cellId) localStorage.setItem('cellId', decodeURIComponent(this.$route.query.cellId))
-    if (this.$route.query.port) localStorage.setItem('port', this.$route.query.port)
-    if (localStorage.getItem('agentPubKey')) {
-      this.holo = false
-      this.$store.dispatch('initialiseStore')
-        .then(() => this.$store.dispatch('simple/initialise'))
-        .then(() => this.$store.dispatch('simple/fetchThings'))
-    }
+    if (localStorage.getItem('agentPubKey')) this.holo = false
   }
 }
 </script>

@@ -32,12 +32,18 @@ pub(crate) fn list_things(input: ThingListInput) -> SimpleResult<ThingList> {
     let thing_path_links = parent_path.children()?.into_inner();
     let mut things = Vec::with_capacity(thing_path_links.len());
     for thing_uuid in thing_path_links.into_iter().map(|link| link.target) {
-    let mut links = get_links(thing_uuid, None)?.into_inner();
-    links.sort_by_key(|l|l.timestamp);
-    if let Some(thing_link_last) = links.last() {
-         if let Some(element) = get(thing_link_last.target.clone(), GetOptions::default())? {
+        debug!(line!());
+        let mut links = get_links(thing_uuid, None)?.into_inner();
+        debug!(line!());
+        links.sort_by_key(|l|l.timestamp);
+        debug!(format!("{:?}", links));
+        if let Some(thing_link_last) = links.last() {
+            if let Some(element) = get(thing_link_last.target.clone(), GetOptions::default())? {
+                debug!(line!());
                 if let Some(thing) = element.into_inner().1.to_app_option::<ThingEntry>()? {
+                    debug!(line!());
                     things.push(Thing::new(thing.clone(), hash_entry(&thing)?)?);
+                    debug!(line!());
                 }
             }
         }

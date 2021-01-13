@@ -32,19 +32,17 @@ module.exports = (api, options) => {
       'eslint-config-vuetify': '^0.6.1',
       'eslint-plugin-vue': '^6.2.2',
       'eslint-plugin-vuetify': '^1.0.0-beta.6',
-      lodash: '^4.17.15',
-      webfontloader: '^1.6.28'
+      'lodash': '^4.17.15'
     },
     scripts: {
       'serve:agent1': 'vue-cli-service serve --port 44001',
       'serve:agent2': 'vue-cli-service serve --port 44002',
       'serve:agent3': 'vue-cli-service serve --port 44003',
       'serve:agent4': 'vue-cli-service serve --port 44004',
-      'postinstall': 'cd dna/simple/tests && yarn install'
+      'postinstall': 'cd dna/simple/tests && yarn install',
+      'start': 'nf start'
     }
   })
-
-  api.injectImports(api.entryFile, 'import \'./plugins\'')
 
   api.onCreateComplete(() => {
     const presetName = `Holochain Simple Application preset`

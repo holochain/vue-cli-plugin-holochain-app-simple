@@ -11,13 +11,16 @@
 <script>
 export default {
   name: 'App',
-  created () {
+  mounted () {
     this.$vuetify.theme.dark = true
-    if (localStorage.getItem('agentPubKey')) {
-      this.holo = false
-      this.$store.dispatch('initialiseStore')
-        .then(() => this.$store.dispatch('simple/initialise'))
-        .then(() => this.$store.dispatch('simple/fetchThings'))
+  },
+  watch: {
+    $route (to) {
+      console.log(to)
+      console.log(this.$route)
+      Object.keys(this.$route.query).forEach(key => {
+        localStorage.setItem(key, this.$route.query[key])
+      })
     }
   }
 }

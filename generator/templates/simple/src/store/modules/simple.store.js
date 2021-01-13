@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import * as base64 from 'byte-base64'
+import Dexie from 'dexie'
+import { AppWebsocket } from '@holochain/conductor-api'
 
 Vue.use(Vuex)
 
@@ -8,52 +10,71 @@ export default {
   namespaced: true,
   state: {
     agentPubKey: '',
-    cellId: '',
+    simpleCellId: '',
     things: []
   },
   actions: {
-    async initialise ({ commit }) {
-      commit('agentPubKey', base64.base64ToBytes(localStorage.getItem('agentPubKey')))
-      commit('cellId', [base64.base64ToBytes(localStorage.getItem('cellId')), base64.base64ToBytes(localStorage.getItem('agentPubKey'))])
+    async initialise ({ state, commit }) {
+      state.db = new Dexie('simple')
+      state.db.version(1).stores({
+        things: 'uuid'
+      })
+      state.db.open().catch(function (e) {
+        console.error('Open failed: ' + e)
+      })
+      AppWebsocket.connect(`ws://localhost:${localStorage.getItem('port')}`)
+        .then(socket => {
+          commit('hcClient', socket)
+        })
+      commit('agentPubKey', base64.base64ToBytes(decodeURIComponent(localStorage.getItem('agentPubKey'))))
+      commit('simpleCellId', base64.base64ToBytes(decodeURIComponent(localStorage.getItem('simpleCellId'))))
     },
-    fetchThings ({ rootState, state, commit }) {
-      rootState.db.things.toArray(things => {
+    fetchThings ({ state, commit }) {
+      console.log(state.simpleCellId)
+      state.db.things.toArray(things => {
         commit('setThings', things)
-        rootState.hcClient
+        state.hcClient
           .callZome({
             cap: null,
-            cell_id: state.cellId,
+            cell_id: [state.simpleCellId, state.agentPubKey],
             zome_name: 'simple',
             fn_name: 'list_things',
             provenance: state.agentPubKey,
             payload: { parent: 'Things' }
           })
           .then(result => {
+            console.log('🚀 ~ file: simple.store.js ~ line 46 ~ fetchThings ~ result', result)
             result.things.forEach(thing => {
-              rootState.db.things.put(thing).then((result) => console.log(result))
+              state.db.things.put(thing).then((result) => console.log(result))
             })
             commit('setThings', result.things)
           })
+          .catch(err => console.log(err))
       })
     },
-    saveThing ({ rootState, state, commit }, payload) {
+    saveThing ({ state, commit }, payload) {
       const thing = { ...payload.thing, parent: 'Things' }
-      rootState.db.things.put(thing)
+      state.db.things.put(thing)
+      if (payload.action === 'create') {
+        commit('createThing', thing)
+      } else {
+        commit('updateThing', thing)
+      }
       if (thing.entryHash) {
-        rootState.hcClient
+        state.hcClient
           .callZome({
             cap: null,
-            cell_id: state.cellId,
+            cell_id: [state.simpleCellId, state.agentPubKey],
             zome_name: 'simple',
             fn_name: 'delete_thing',
             provenance: state.agentPubKey,
             payload: thing
           })
       }
-      rootState.hcClient
+      state.hcClient
         .callZome({
           cap: null,
-          cell_id: state.cellId,
+          cell_id: [state.simpleCellId, state.agentPubKey],
           zome_name: 'simple',
           fn_name: 'create_thing',
           provenance: state.agentPubKey,
@@ -61,22 +82,18 @@ export default {
         })
         .then(committedThing => {
           committedThing.entryHash = base64.bytesToBase64(committedThing.entryHash)
-          if (payload.action === 'create') {
-            commit('createThing', committedThing)
-          } else {
-            commit('updateThing', committedThing)
-          }
+          state.db.things.put(committedThing)
+          commit('updateThing', committedThing)
         })
     },
-    deleteThing ({ rootState, state, commit }, payload) {
+    deleteThing ({ state, commit }, payload) {
       const thing = payload.thing
-      console.log(thing)
-      rootState.db.things.delete(thing.uuid)
+      state.db.things.delete(thing.uuid)
       commit('deleteThing', thing)
-      rootState.hcClient
+      state.hcClient
         .callZome({
           cap: null,
-          cell_id: state.cellId,
+          cell_id: [state.simpleCellId, state.agentPubKey],
           zome_name: 'simple',
           fn_name: 'delete_thing',
           provenance: state.agentPubKey,
@@ -88,8 +105,11 @@ export default {
     agentPubKey (state, payload) {
       state.agentPubKey = payload
     },
-    cellId (state, payload) {
-      state.cellId = payload
+    simpleCellId (state, payload) {
+      state.simpleCellId = payload
+    },
+    hcClient (state, payload) {
+      state.hcClient = payload
     },
     setThings (state, payload) {
       const things = payload
