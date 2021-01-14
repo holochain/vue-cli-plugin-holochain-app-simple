@@ -16,8 +16,6 @@ export default {
   },
   watch: {
     $route (to) {
-      console.log(to)
-      console.log(this.$route)
       Object.keys(this.$route.query).forEach(key => {
         localStorage.setItem(key, this.$route.query[key])
       })

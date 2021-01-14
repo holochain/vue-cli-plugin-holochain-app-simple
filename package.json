@@ -1,6 +1,6 @@
 {
   "name": "vue-cli-plugin-holochain-app-simple",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A simple Holocahin app showing how it all fits together.",
   "author": "Philip Beadle <philip.beadle@holo.host>",
   "license": "MIT",

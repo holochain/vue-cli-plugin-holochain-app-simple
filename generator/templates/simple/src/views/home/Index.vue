@@ -1,10 +1,7 @@
 <template>
-<v-card>
- <v-app-bar app height="100">
-<v-avatar
-        class="mr-1"
-        size="70"
-      >
+  <v-card>
+    <v-app-bar app dense dark>
+      <v-avatar class="mr-1" size="40">
         <v-img
           contain
           max-height="90%"
@@ -13,7 +10,7 @@
       </v-avatar>
       <v-toolbar-title>
         <v-btn class="title font-weight-black headline" text to="things">
-          Simple
+          Things
         </v-btn>
       </v-toolbar-title>
       <v-spacer></v-spacer>
@@ -87,8 +84,7 @@
         >
           This Vuetify web app, Simple, is setup to show you how easy it is to build a Holochain application. Simple is a starting point for, as you guessed, simple apps that don't require a complicated navigation system or other fancy layouts. Simple shows you how to use Vue Router, Vuex and Holochain.
           It also shows you how to secure your routes and check to make sure the person using Simple has a Holochain Public Agent Key or has logged in to Holo.
-          Simple also uses dexie.js to store information in the browser database, IndexDB. This speeds up your even more enabling you to retrieve data immediately from IndexDB and then let the data be updated by Holochain. This is known as the stale-while-revalidate (SWR) pattern.
-          If your app needs more complicated layouts try the Holochain Kitchen Sink option.
+          Simple also uses dexie.js to store information in the browser database, IndexDB. This speeds up your app even more enabling you to retrieve data immediately from IndexDB and then let the data be updated by Holochain. This is known as the stale-while-revalidate (SWR) pattern.
         </v-responsive>
         <h2 class="display-2 font-weight-bold mb-3">What's Next?</h2>
         <v-responsive
@@ -102,10 +98,8 @@
           class="mx-auto title font-weight-light mb-8"
           max-width="720"
         >
-          Get the Toolset for App Developers from ... The tools are a set of bash and Node.js scripts with templates to make it easy to build new DNA for your app.
-          If you would like to use Simple as is open the copyDna.sh and change the "appsDir" to your location and then run it. This will add the Simple DNA to your app. Now you have DNA yu will need a Holochain conductor. In the toolset you will see the "conductor" folder. Again update the appDir and run the "conductor.sh" script.
-          Modify this generated application to your requirements. The name of this app, Simple, should be changed to your app name for example, Holodex. The data type or entry type as we call it at Holochain for Simple is called "thing" :) So update "thing" to your entry type, for example "contact".
-          For your first few apps do this manually throughout the code base so you get familiar with where things are (see what I did there ;))
+          Check out the part of this Simple app that interacts with Holochain by clicking the THINGS link at the top of the page. Try adding, updating and deleting a few entries. You can create another 3 demo agents in Builder by creating a key and installing the Simple DNA for them. You can now easily interact with your app as 1 of the 4 agents.
+          Next try adding a module from the Shop to add complete pieces of functionality to your app. You can then edit the code to meet your own requirements.
         </v-responsive>
         <v-avatar
           class="elevation-12 mb-12"
