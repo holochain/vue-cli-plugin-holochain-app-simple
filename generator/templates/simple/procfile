@@ -1,4 +1,0 @@
-agent1: yarn serve:agent1
-agent2: yarn serve:agent2
-agent3: yarn serve:agent3
-agent4: yarn serve:agent4
